@@ -2,14 +2,14 @@ import {ref, watch} from "vue";
 
 export default () => {
     // Keep track of the status of each clock.
-    const statuses = ref<Record<number, 'RESET' | 'RUNNING' | 'PAUSED'>>({
+    const statuses = ref<Record<1 | 2 | 3, 'RESET' | 'RUNNING' | 'PAUSED'>>({
         1: 'RESET',
         2: 'RESET',
         3: 'RESET'
     })
     // Keep track of which clock is currently active.
     // When this is set to zero, everything is reset and no clocks are active
-    const currentRunning = ref(0);
+    const currentRunning = ref<0 | 1 | 2 | 3 | 4>(0);
 
     // Simple up and down counter helpers which loops around when going below 1 or above 3.
     const up = () => {
@@ -69,6 +69,9 @@ export default () => {
         statuses.value[1] = 'PAUSED';
         statuses.value[2] = 'PAUSED';
         statuses.value[3] = 'PAUSED';
+        if (currentRunning.value === 4) {
+            return;
+        }
         statuses.value[currentRunning.value] = 'RUNNING';
     })
 
